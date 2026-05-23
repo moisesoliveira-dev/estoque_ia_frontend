@@ -7,7 +7,10 @@ COPY package*.json ./
 RUN npm ci
 
 COPY . .
-RUN npm run build
+
+# development | production — controls Angular file replacements
+ARG BUILD_CONFIG=production
+RUN npm run build -- --configuration=${BUILD_CONFIG}
 
 # ── Stage 2: serve via nginx ───────────────────────────────────────────────────
 FROM nginx:1.27-alpine AS runner
